@@ -6,19 +6,55 @@ import './App.css';
 export default class Poducts extends Component {
   constructor(props){
     super(props)
-    this.state={
-      products:[],
-      filteredProducts:[]
-    }
+    this.state = {
+      products: [],
+      filteredProducts: [],
+      size: "",
+      sort: "",
+      cartItems: []
+    };
   }
 
- componentWillMount(){
+ componentDidMount(){
    fetch("http://localhost:8000/products").then(res => res.json())
    .then(data => this.setState({
      products: data,
      filteredProducts: data
    }))
  }
+ listProducts(){
+       this.setState(state => {
+         if (state.sort !== "") {
+           state.products.sort((a, b) =>
+             state.sort === "lowestprice"
+               ? a.price > b.price
+                 ? 1
+                 : -1
+               : a.price < b.price
+               ? 1
+               : -1
+           );
+         } else {
+           state.products.sort((a, b) => (a.id > b.id ? 1 : -1));
+         }
+         if (state.size !== "") {
+           return {
+             filteredProducts: state.products.filter(
+               a => a.availableSizes.indexOf(state.size.toUpperCase()) >= 0
+             )
+           };
+         }
+         return { filteredProducts: state.products };
+       });
+ }
+  handleChangeSort = (e) => {
+    this.setState({ sort: e.target.value });
+    this.listProducts();
+  }
+  handleChangeSize = (e) => {
+    this.setState({ size: e.target.value });
+    this.listProducts();
+  }
   render() {
       return (
         <div className="container">

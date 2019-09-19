@@ -5,7 +5,7 @@ import util from "../util";
 export default class Poducts extends Component {
   render() {
     const productItems = this.props.products.map(product => (
-      <div className="col-md-4" style={{ height: "300px" }}>
+      <div className="col-md-4" style={{ height: "300px" }} key={product.id}>
         <div className="thumbnail text-center">
           <a
             href={`#${product.id}`}
