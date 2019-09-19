@@ -22,7 +22,7 @@ export default class Poducts extends Component {
      filteredProducts: data
    }))
  }
- listProducts(){
+ listProducts = () =>{
        this.setState(state => {
          if (state.sort !== "") {
            state.products.sort((a, b) =>
